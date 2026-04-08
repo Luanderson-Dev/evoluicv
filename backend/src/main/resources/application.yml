@@ -24,3 +24,15 @@ logging:
   level:
     com.evoluicv.backend: INFO
     dev.langchain4j: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: evoluicv-backend
