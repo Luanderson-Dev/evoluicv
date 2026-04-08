@@ -66,9 +66,9 @@ export default function Page() {
 					Evolui CV
 				</h1>
 				<p className='text-sm text-muted-foreground'>
-					Receba uma análise crítica do seu currículo — como se um
-					recrutador sênior tivesse revisado pessoalmente — e
-					sugestões pontuais de melhoria.
+					Receba uma análise crítica do seu currículo feita por um
+					agente de IA. Tenha acesso a um feedback baseado em conhecimentos
+					reais de mercado e sugestões pontuais de melhoria.
 				</p>
 			</header>
 
