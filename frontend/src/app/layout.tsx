@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Figtree, Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { CSPostHogProvider } from './providers';
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -41,7 +42,9 @@ export default function RootLayout({
 			)}
 		>
 			<body className='min-h-full flex flex-col'>
-				<ThemeProvider>{children}</ThemeProvider>
+				<CSPostHogProvider>
+					<ThemeProvider>{children}</ThemeProvider>
+				</CSPostHogProvider>
 			</body>
 		</html>
 	);
