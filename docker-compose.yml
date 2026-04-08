@@ -1,0 +1,36 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    image: evoluicv-backend:local
+    container_name: evoluicv-backend
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?defina OPENAI_API_KEY no .env ou no ambiente}
+      JAVA_OPTS: ${JAVA_OPTS:-}
+    restart: unless-stopped
+    networks:
+      - evoluicv
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+    image: evoluicv-frontend:local
+    container_name: evoluicv-frontend
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - server_proxy
+      - evoluicv
+
+networks:
+  evoluicv:
+    name: evoluicv_network
+    driver: bridge
+  server_proxy:
+    external: true
