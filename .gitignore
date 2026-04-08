@@ -42,8 +42,6 @@ target/
 *.ear
 hs_err_pid*
 replay_pid*
-.mvn/
-!.mvn/wrapper/maven-wrapper.properties
 
 # Logs
 *.log
