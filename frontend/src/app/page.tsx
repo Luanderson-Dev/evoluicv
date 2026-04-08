@@ -1,5 +1,6 @@
 'use client';
 
+import { AppFooter } from '@/components/app-footer';
 import { AnalysisResultView } from '@/components/cv/analysis-result-view';
 import { CvUploadForm } from '@/components/cv/cv-upload-form';
 import { ImprovementSuggestionsView } from '@/components/cv/improvement-suggestions-view';
@@ -60,72 +61,76 @@ export default function Page() {
 	const showResults = isLoading || hasResult;
 
 	return (
-		<main className='mx-auto flex w-full flex-1 flex-col gap-6 p-4 lg:p-8'>
-			<header className='flex flex-col gap-1'>
-				<h1 className='font-heading text-2xl font-semibold tracking-tight'>
-					Evolui CV
-				</h1>
-				<p className='text-sm text-muted-foreground'>
-					Receba uma análise crítica do seu currículo feita por um
-					agente de IA. Tenha acesso a um feedback baseado em conhecimentos
-					reais de mercado e sugestões pontuais de melhoria.
-				</p>
-			</header>
+		<>
+			<main className='mx-auto flex w-full flex-1 flex-col gap-6 p-4 lg:p-8'>
+				<header className='flex flex-col gap-1'>
+					<h1 className='font-heading text-2xl font-semibold tracking-tight'>
+						Evolui CV
+					</h1>
+					<p className='text-sm text-muted-foreground'>
+						Receba uma análise crítica do seu currículo feita por um
+						agente de IA. Tenha acesso a um feedback baseado em
+						conhecimentos reais de mercado e sugestões pontuais de
+						melhoria.
+					</p>
+				</header>
 
-			{error && (
-				<div className='flex items-start gap-3 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive'>
-					<HugeiconsIcon
-						icon={Alert02Icon}
-						className='mt-0.5 h-4 w-4 shrink-0'
-					/>
-					<div className='flex-1'>
-						<p className='font-medium'>
-							Não foi possível analisar o CV
-						</p>
-						<p className='mt-0.5 text-xs text-destructive/80'>
-							{error}
-						</p>
-					</div>
-					<Button
-						type='button'
-						variant='ghost'
-						size='sm'
-						onClick={handleReset}
-						className='text-destructive hover:text-destructive'
-					>
+				{error && (
+					<div className='flex items-start gap-3 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive'>
 						<HugeiconsIcon
-							icon={RefreshIcon}
-							className='h-3.5 w-3.5'
+							icon={Alert02Icon}
+							className='mt-0.5 h-4 w-4 shrink-0'
 						/>
-						Tentar novamente
-					</Button>
-				</div>
-			)}
-
-			<div
-				className={
-					showResults
-						? 'grid w-full gap-6 lg:grid-cols-3 lg:items-start'
-						: 'mx-auto w-full max-w-3xl'
-				}
-			>
-				<CvUploadForm
-					onSubmit={handleSubmit}
-					isLoading={isLoading}
-				/>
-				{showResults && (
-					<>
-						<AnalysisResultView
-							data={result?.analysis ?? null}
-							isLoading={isLoading}
-						/>
-						<ImprovementSuggestionsView
-							data={result?.improvements ?? null}
-							isLoading={isLoading}
-						/>
-					</>
+						<div className='flex-1'>
+							<p className='font-medium'>
+								Não foi possível analisar o CV
+							</p>
+							<p className='mt-0.5 text-xs text-destructive/80'>
+								{error}
+							</p>
+						</div>
+						<Button
+							type='button'
+							variant='ghost'
+							size='sm'
+							onClick={handleReset}
+							className='text-destructive hover:text-destructive'
+						>
+							<HugeiconsIcon
+								icon={RefreshIcon}
+								className='h-3.5 w-3.5'
+							/>
+							Tentar novamente
+						</Button>
+					</div>
 				)}
-			</div>
-		</main>
+
+				<div
+					className={
+						showResults
+							? 'grid w-full gap-6 lg:grid-cols-3 lg:items-start'
+							: 'mx-auto w-full max-w-3xl'
+					}
+				>
+					<CvUploadForm
+						onSubmit={handleSubmit}
+						isLoading={isLoading}
+					/>
+					{showResults && (
+						<>
+							<AnalysisResultView
+								data={result?.analysis ?? null}
+								isLoading={isLoading}
+							/>
+							<ImprovementSuggestionsView
+								data={result?.improvements ?? null}
+								isLoading={isLoading}
+							/>
+						</>
+					)}
+				</div>
+			</main>
+			<AppFooter />
+		</>
 	);
 }
