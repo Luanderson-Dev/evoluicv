@@ -1,45 +1,148 @@
-# Evolui CV
+# 🚀 Evolui CV
 
-Plataforma que transforma o currículo em vantagem competitiva por meio de uma análise crítica que simula a revisão de um recrutador sênior: aponta erros, explica **por que** são problemas e oferece sugestões acionáveis, alinhadas ao objetivo profissional do candidato ou à descrição de uma vaga específica.
+![Next.js](https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![Java 25](https://img.shields.io/badge/Java_25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)
 
-A interface principal reflete o fluxo em três colunas:
+> Plataforma que transforma currículo em vantagem competitiva através de análise inteligente baseada em IA.
+
+---
+
+## 🚀 Teste Agora
+
+👉 [https://evoluicv.luanderson.dev.br/](https://evoluicv.luanderson.dev.br/)
+
+![demo](https://i.ibb.co/v6DXCKxk/demo-evoluicv.gif)
+
+---
+
+## 📌 Visão Geral
+
+O **Evolui CV** simula a análise de um recrutador sênior para avaliar currículos de forma crítica, direta e acionável.
+
+A aplicação identifica problemas reais, explica o impacto de cada um deles e propõe melhorias alinhadas ao objetivo profissional do candidato ou a uma vaga específica.
+
+### 💡 Diferencial
+
+Não é só “feedback genérico de IA”. Aqui o foco é:
+
+- Diagnóstico realista
+- Explicação clara do problema
+- Sugestão prática de melhoria
+
+---
+
+## 🧠 Como Funciona
+
+A análise acontece através de um pipeline com dois agentes:
+
+### 1. Recruiter Analyst
+
+- Assume a persona de um recrutador experiente
+- Detecta automaticamente o idioma
+- Retorna:
+    - `score`
+    - `strengths`
+    - `issues` (com `why`, `severity`, `suggestion`)
+    - `recommendedActions`
+
+### 2. Improvement Suggestions
+
+- Recebe o CV + análise
+- Retorna melhorias estruturadas:
+    - `ADD`
+    - `REMOVE`
+    - `REWRITE`
+    - `IMPROVE`
+
+---
+
+## 🖥️ Interface
+
+Fluxo simples e direto:
 
 ```
-envio do CV  |  parecer do recrutador  |  sugestões de melhoria
+Envio do CV | Parecer do recrutador | Sugestões de melhoria
 ```
 
-## Arquitetura
+Sem distração. Só decisão.
 
-Monorepo com dois aplicativos independentes:
+---
 
-- **`frontend/`** — Next.js 16 (App Router) + React 19 + TypeScript + Tailwind CSS v4
-- **`backend/`** — Spring Boot 3.5 + Java 25 + LangChain4j (OpenAI) + Apache Tika
+## ✨ Funcionalidades
 
-O frontend conversa com a API REST do backend através de `src/lib/api.ts` (`analyzeCv()` via `multipart/form-data`). A base URL é configurável por `NEXT_PUBLIC_API_URL` (padrão `http://localhost:8080`).
+- Upload de arquivos (`PDF`, `DOCX`, `TXT`)
+- Colagem direta de texto
+- Suporte multilíngue
+- Análise baseada em vaga específica
+- Score geral do currículo
+- Problemas priorizados por severidade
+- Sugestões práticas por seção
+- Comparação antes x depois
+- Tema claro/escuro
 
-### Pipeline de análise
+---
 
-O backend é stateless e usa um pipeline sequencial de dois agentes:
+## 🏗️ Arquitetura
 
-1. **Recruiter Analyst** — persona de recrutador sênior. Detecta o idioma do CV e devolve um parecer estruturado (`score`, `strengths`, `issues` com `why`/`suggestion`/`severity`, `recommendedActions`).
-2. **Improvement Suggestions** — recebe o CV original + o parecer e devolve sugestões acionáveis (`ADD`/`REMOVE`/`REWRITE`/`IMPROVE`) por seção, no mesmo idioma do CV.
+Monorepo dividido em dois serviços:
 
-As personas vivem em `backend/src/main/resources/prompts/*.txt` e o contrato de structured output é garantido por JSON Schema + records imutáveis em `com.evoluicv.backend.ai.model.*`.
+### Frontend
 
-## Funcionalidades
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS v4
 
-- Upload de CV em **PDF, DOCX ou TXT** (até 10 MB) ou colagem direta do texto
-- Detecção automática do idioma — a resposta espelha o idioma do CV
-- **Modo vaga específica**: ative o toggle e cole a descrição completa de uma vaga — a análise e as sugestões são calibradas por ela
-- Parecer com `overallScore`, pontos fortes, issues priorizados por severidade e ações recomendadas
-- Sugestões de reescrita por seção, comparando o texto atual com a versão proposta
-- Tema claro/escuro e layout responsivo
+### Backend
 
-## Como rodar
+- Spring Boot 3.5
+- Java 25
+- LangChain4j
+- Apache Tika
 
-### Backend (Spring Boot)
+---
 
-Pré-requisitos: Java 25, Maven Wrapper incluso, conta e chave da OpenAI.
+## 🔌 Comunicação
+
+Frontend consome a API via:
+
+```
+src/lib/api.ts → analyzeCv()
+```
+
+- Formato: `multipart/form-data`
+- Base URL configurável via:
+
+```
+NEXT_PUBLIC_API_URL
+```
+
+---
+
+## 🚀 Como Rodar
+
+### 🐳 Docker (Recomendado)
+
+```bash
+export OPENAI_API_KEY=sk-...
+
+docker-compose up --build
+```
+
+Acessos:
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend: [http://localhost:8080](http://localhost:8080)
+
+---
+
+### 💻 Rodando Localmente
+
+#### Backend
 
 ```bash
 cd backend
@@ -47,24 +150,15 @@ export OPENAI_API_KEY=sk-...
 ./mvnw spring-boot:run
 ```
 
-A API sobe em `http://localhost:8080`.
-
-Endpoints:
-
-- `GET  /api/health`
-- `POST /api/cv/analyze`
-  - `application/json`: `{ "cvText": "...", "professionalGoal": "...", "targetRole": "..." }`
-  - `multipart/form-data`: `file` **ou** `cvText` + `professionalGoal` (obrigatório) + `targetRole` (opcional)
-
-Para rodar a suíte de testes (sem chamar a OpenAI):
+Rodar testes:
 
 ```bash
 ./mvnw test
 ```
 
-### Frontend (Next.js)
+---
 
-Pré-requisitos: Node.js 20+, Yarn. Use **Yarn** para manter o lockfile consistente.
+#### Frontend
 
 ```bash
 cd frontend
@@ -72,55 +166,64 @@ yarn install
 yarn dev
 ```
 
-Abra `http://localhost:3000`.
+---
 
-Variáveis de ambiente opcionais:
-
-```bash
-NEXT_PUBLIC_API_URL=http://localhost:8080
-```
-
-Scripts disponíveis:
-
-```bash
-yarn dev      # servidor de desenvolvimento
-yarn build    # build de produção
-yarn start    # servidor de produção (após build)
-yarn lint     # eslint (next/core-web-vitals)
-```
-
-## Estrutura de pastas
+## 📁 Estrutura do Projeto
 
 ```
 evoluicv/
 ├── backend/
-│   ├── src/main/java/com/evoluicv/backend/
-│   │   ├── ai/agent/         # interfaces @AiService do LangChain4j
-│   │   ├── ai/model/         # records de structured output
-│   │   ├── cv/               # controller, service, text extractor, DTOs
-│   │   ├── config/           # CORS
-│   │   └── error/            # exceções + GlobalExceptionHandler
-│   └── src/main/resources/
-│       ├── application.yml
-│       └── prompts/          # personas (recrutador e sugestões)
+│   ├── ai/
+│   ├── cv/
+│   ├── config/
+│   ├── error/
+│   └── prompts/
 └── frontend/
-    └── src/
-        ├── app/              # rotas do App Router, layout, globals.css
-        ├── components/
-        │   ├── cv/           # formulário, parecer, sugestões
-        │   └── ui/           # primitivos shadcn (radix-mira)
-        ├── hooks/
-        ├── lib/              # cliente HTTP, utilitários
-        └── types/             # tipos espelhando os records do backend
+    ├── app/
+    ├── components/
+    ├── lib/
+    └── types/
 ```
 
-## Notas
+---
 
-- O contrato entre frontend e backend é rígido: qualquer mudança em um record em `com.evoluicv.backend.ai.model.*` precisa atualizar `frontend/src/types/analysis.ts` no mesmo commit.
-- O CORS do backend libera apenas `http://localhost:3000` em `/api/**`. Ajuste em `CorsConfig` para outros ambientes.
-- Tamanho mínimo do texto do CV: 200 caracteres — textos menores retornam HTTP 422.
-- Persistência, autenticação, streaming SSE e OCR de PDFs escaneados estão fora do escopo atual.
+## 📌 Regras Técnicas
 
-## Licença
+- Contrato frontend/backend é rígido
+- Alterações exigem sincronização imediata
+- CORS liberado apenas para localhost:3000
+- Tamanho mínimo do CV: 200 caracteres
+- Abaixo disso retorna HTTP 422
 
-Projeto pessoal — direitos reservados ao autor.
+---
+
+## ⚠️ Limitações Atuais
+
+- Sem autenticação
+- Sem persistência de dados
+- Sem streaming (SSE)
+- Sem OCR para PDFs baseados em imagem
+
+---
+
+## 🧪 Stack Técnica
+
+| Camada   | Tecnologia           |
+| -------- | -------------------- |
+| Frontend | Next.js + React      |
+| Backend  | Spring Boot          |
+| IA       | OpenAI + LangChain4j |
+| Parsing  | Apache Tika          |
+
+---
+
+## 👨‍💻 Autor
+
+**Luanderson Pimenta Mendes**
+Backend Software Engineer
+
+---
+
+## 📄 Licença
+
+Projeto pessoal — todos os direitos reservados.
