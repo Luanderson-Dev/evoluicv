@@ -1,3 +1,7 @@
+# Local-only docs (not published)
+CLAUDE.md
+.claude/
+
 # OS
 .DS_Store
 Thumbs.db
