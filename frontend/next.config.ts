@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
 		return [
 			{
 				source: '/api/:path*',
-				destination: `${process.env.BACKEND_INTERNAL_URL || 'http://localhost:8080'}/:path*`,
+				destination: `${process.env.BACKEND_INTERNAL_URL || 'http://localhost:8080'}/api/:path*`,
 			},
 		];
 	},
