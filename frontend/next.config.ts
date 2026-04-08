@@ -1,9 +1,17 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
-  output: "standalone",
+	/* config options here */
+	reactCompiler: true,
+	output: 'standalone',
+	async rewrites() {
+		return [
+			{
+				source: '/api/:path*',
+				destination: `${process.env.BACKEND_INTERNAL_URL || 'http://localhost:8080'}/:path*`,
+			},
+		];
+	},
 };
 
 export default nextConfig;
