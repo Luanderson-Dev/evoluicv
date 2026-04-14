@@ -10,12 +10,24 @@ const API_BASE_URL =
 export class ApiError extends Error {
 	readonly status: number;
 	readonly details?: string;
+	readonly errorCode?: string;
+	readonly retryAfterSeconds?: number;
 
-	constructor(message: string, status: number, details?: string) {
+	constructor(
+		message: string,
+		status: number,
+		options: { details?: string; errorCode?: string; retryAfterSeconds?: number } = {},
+	) {
 		super(message);
 		this.name = 'ApiError';
 		this.status = status;
-		this.details = details;
+		this.details = options.details;
+		this.errorCode = options.errorCode;
+		this.retryAfterSeconds = options.retryAfterSeconds;
+	}
+
+	get isRateLimited(): boolean {
+		return this.status === 429 || this.errorCode === 'rate_limit_exceeded';
 	}
 }
 
@@ -29,18 +41,32 @@ interface BackendError {
 async function parseError(response: Response): Promise<ApiError> {
 	let message = `Falha na análise (HTTP ${response.status})`;
 	let details: string | undefined;
+	let errorCode: string | undefined;
 	try {
 		const body = (await response.json()) as BackendError;
 		if (body?.message) {
 			message = body.message;
 		}
-		if (body?.error && body.error !== message) {
-			details = body.error;
+		if (body?.error) {
+			errorCode = body.error;
+			if (body.error !== message) {
+				details = body.error;
+			}
 		}
 	} catch {
 		// resposta sem JSON — mantém mensagem padrão
 	}
-	return new ApiError(message, response.status, details);
+
+	let retryAfterSeconds: number | undefined;
+	const retryAfter = response.headers.get('Retry-After');
+	if (retryAfter) {
+		const parsed = Number.parseInt(retryAfter, 10);
+		if (Number.isFinite(parsed) && parsed > 0) {
+			retryAfterSeconds = parsed;
+		}
+	}
+
+	return new ApiError(message, response.status, { details, errorCode, retryAfterSeconds });
 }
 
 export async function analyzeCv(
